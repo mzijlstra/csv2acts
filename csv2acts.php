@@ -31,6 +31,7 @@ foreach($lines as $line) {
 
 		# set home dir permissions so that jail works & logs are not endangered
 		exec("chown root:root /home/$username /home/$username/log");
+		exec("chmod 755 /home/$username/log");
 
 		# set the users' quote to 50MB (1 quota block is 1K)
 		exec("quotatool -u $username -b -l 51200 /");
