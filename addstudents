@@ -1,0 +1,3 @@
+#!/bin/bash
+
+/usr/bin/php /home/mzijlstra/code/csv2acts/csv2acts.php $1

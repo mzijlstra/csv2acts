@@ -2,11 +2,11 @@
 require "passwd.php";
 
 if (getenv('USER') !== "root") {
-	die("Script needs to run as root (which you are not)");
+	die("Script needs to run as root (which you are not)\n");
 }
 
 if (count ($argv) !== 2 || !preg_match("/.*\.csv/i" ,$argv[1])) {
-	die("Script expects a single argument that is the name of a .csv file");
+	die("Script expects a single argument that is the name of a .csv file\n");
 }
 
 
@@ -27,7 +27,7 @@ foreach($lines as $line) {
 
 		# set passphrase
 		$pass = passwd();
-		exec("echo '$pass\n$pass\n' | passwd $username");
+		exec("echo '$pass\n$pass\n' | passwd $username > /dev/null 2>&1");
 
 		# set home dir permissions so that jail works & logs are not endangered
 		exec("chown root:root /home/$username /home/$username/log");
@@ -57,8 +57,9 @@ Mumstudents.org Automated Account Creator
 ";
 
 		#email the user about his newly created account
-		$headers = "FROM: accounts@mumstudents.org";
+		$headers ='FROM: "Mumstudents.org Accounts" <accounts@mumstudents.org>';
 		mail($email, "mumstudents.org account", $message, $headers);
+		echo "created account: $username\n";
 	}
 }
 

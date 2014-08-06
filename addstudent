@@ -1,0 +1,53 @@
+#!/bin/bash
+
+if [ "$(id -u)" != "0" ]; then
+	echo "You need to be root to run this script (or use sudo)" 1>&2
+	exit 1
+fi
+
+# read user's details from stdin
+echo -n "First name: "
+read firstname
+echo -n "Last name: "
+read lastname
+echo -n "Student ID: "
+read sid
+echo -n "Email address: "
+read email
+
+# create lowercase username 
+username=${firstname:0:1}$lastname
+declare -l username
+username=$username
+
+echo -n "Username [$username]: "
+read alt
+if [ $alt ]; then
+	username=$alt
+fi
+
+# generate a pass phrase
+pass=`/usr/bin/php /home/mzijlstra/code/csv2acts/passwd.php`
+
+#prepare comment section for /etc/passwd
+comment="$firstname $lastname,$sid,,,$email"
+
+#create the user and set his password
+useradd -m -c "$comment" -N -g users -G jail $username
+echo -e "$pass\n$pass\n" | passwd $username > /dev/null 2>&1
+
+# set the permissions on his home and log directories
+chown root:root /home/$username /home/$username/log
+chmod 755 /home/$username/log
+
+# set the disk quota (one block is 1k, 51200 is 50MB)
+quotatool -u $username -b -l 51200 /
+
+
+message="FROM: \"Mumstudents.org Accounts\" <accounts@mumstudents.org>\r\nTO: \"$firstname $lastname\" <$email>\r\nSUBJECT: mumstudents.org account\r\n\r\nDear $firstname $lastname, \r\n\r\nThis is an automated email to notify you that the following account has been created for you on sftp://mumstudents.org\r\n\r\nuser: $username\r\npass: $pass\r\n\r\nPlease note that both the username and password are case sensitive, and that the password includes spaces and at least one punctuation mark.\r\n\r\nYou can use an sftp client like FileZilla to log into your account, your course instructor will demonstrate how to do this during the first couple of days of your course.\r\n\r\nPlease do not reply to this email, instead direct any questions about your account to your instructor.\r\n\r\nBest of luck,\r\n\r\nMumstudents.org Automated Account Creator\r\n";
+
+echo -e $message | sendmail $email 
+
+echo "Student account $username succesfully created"
+echo "Details have been emailed to the student"
+
