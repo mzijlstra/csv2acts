@@ -20,6 +20,8 @@ foreach($lines as $line) {
 		# in /etc/passwd set the comment field to:
 		# full name,studentId,,,email
 		$comment = "$first $last,$sid,,,$email";
+		# cleanup lastname
+		$last = preg_replace("/[ ']/", "", $last);
 		$username = strtolower($first[0] . $last);
 
 		# students don't get their own group, but are in users and jail
@@ -31,6 +33,7 @@ foreach($lines as $line) {
 
 		# set home dir permissions so that jail works & logs are not endangered
 		exec("chown root:root /home/$username /home/$username/log");
+		exec("chmod 755 /home/$username");
 		exec("chmod 755 /home/$username/log");
 
 		# set the users' quote to 50MB (1 quota block is 1K)
