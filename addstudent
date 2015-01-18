@@ -16,6 +16,7 @@ echo -n "Email address: "
 read email
 
 # create lowercase username 
+lastname=${lastname//[ \']/} #remove spaces and quotes from last names 
 username=${firstname:0:1}$lastname
 declare -l username
 username=$username
@@ -38,6 +39,7 @@ echo -e "$pass\n$pass\n" | passwd $username > /dev/null 2>&1
 
 # set the permissions on his home and log directories
 chown root:root /home/$username /home/$username/log
+chmod 755 /home/$username
 chmod 755 /home/$username/log
 
 # set the disk quota (one block is 1k, 51200 is 50MB)
