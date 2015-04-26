@@ -19,7 +19,8 @@ read email
 lastname=${lastname//[ \']/} #remove spaces and quotes from last names 
 username=${firstname:0:1}$lastname
 declare -l username
-username=$username
+#username=$username
+username=$sid
 
 echo -n "Username [$username]: "
 read alt

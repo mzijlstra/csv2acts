@@ -15,21 +15,23 @@ foreach($lines as $line) {
 	list($sid, $first, $last, $email) = str_getcsv($line);
 
 	# lines that do not start with a studentId are ignored
-	if (preg_match("/^\d{3}-\d{2}-\d{4}$/", $sid)) {
+	if (preg_match("/^(98|10)\d{4}$/", $sid)) {
 
 		# in /etc/passwd set the comment field to:
 		# full name,studentId,,,email
 		$comment = "$first $last,$sid,,,$email";
 		# cleanup lastname
 		$last = preg_replace("/[ ']/", "", $last);
-		$username = strtolower($first[0] . $last);
+		#$username = strtolower($first[0] . $last);
+        $username = $sid;
 
 		# students don't get their own group, but are in users and jail
 		exec("useradd -m -c '$comment' -N -g users -G jail $username");
 
 		# set passphrase
 		$pass = passwd();
-		exec("echo '$pass\n$pass\n' | passwd $username > /dev/null 2>&1");
+        $result = 0;
+		exec("echo '$pass\n$pass\n' | passwd $username > /dev/null 2>&1", $result);
 
 		# set home dir permissions so that jail works & logs are not endangered
 		exec("chown root:root /home/$username /home/$username/log");
