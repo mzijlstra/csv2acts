@@ -59,6 +59,8 @@ Please do not reply to this email, instead direct any questions about your accou
 Best of luck,
 
 Mumstudents.org Automated Account Creator
+
+P.S. Please let professor Michael Zijlstra mzijlstra@mum.edu know if you want to try and break the security on mumstudents.org. I'm always happy to work with students to improve security. I'm not so happy to find out after the fact if a machine has been compromised (cracking is a crime, and there are consequences).
 ";
 
 		#email the user about his newly created account
