@@ -15,11 +15,8 @@ read sid
 echo -n "Email address: "
 read email
 
-# create lowercase username 
-lastname=${lastname//[ \']/} #remove spaces and quotes from last names 
-username=${firstname:0:1}$lastname
+# username based on studentID
 declare -l username
-#username=$username
 username=$sid
 
 echo -n "Username [$username]: "
@@ -47,7 +44,7 @@ chmod 755 /home/$username/log
 quotatool -u $username -b -l 51200 /
 
 
-message="FROM: \"Mumstudents.org Accounts\" <accounts@mumstudents.org>\r\nTO: \"$firstname $lastname\" <$email>\r\nSUBJECT: mumstudents.org account\r\n\r\nDear $firstname $lastname, \r\n\r\nThis is an automated email to notify you that the following account has been created for you on sftp://mumstudents.org\r\n\r\nuser: $username\r\npass: $pass\r\n\r\nPlease note that both the username and password are case sensitive, and that the password includes spaces and at least one punctuation mark.\r\n\r\nYou can use an sftp client like FileZilla to log into your account, your course instructor will demonstrate how to do this during the first couple of days of your course.\r\n\r\nPlease do not reply to this email, instead direct any questions about your account to your instructor.\r\n\r\nBest of luck,\r\n\r\nMumstudents.org Automated Account Creator\r\n\r\nP.S. Please let professor Michael Zijlstra mzijlstra@mum.edu know if you want to try and break the security on mumstudents.org. I'm always happy to work with students to improve security. I'm not so happy to find out after the fact if a machine has been compromised (cracking is a crime, and there are consequences).\r\n";
+message="FROM: \"Mumstudents.org Accounts\" <accounts@mumstudents.org>\r\nTO: \"$firstname $lastname\" <$email>\r\nSUBJECT: mumstudents.org account\r\n\r\nDear $firstname $lastname, \r\n\r\nThis is an automated email to notify you that the following account has been created for you on sftp://mumstudents.org\r\n\r\nuser: $username\r\npass: $pass\r\n\r\nPlease note that both the username and password are case sensitive, and that the password includes spaces and at least one punctuation mark.\r\n\r\nYou can use an sftp client like FileZilla to log into your account, your course instructor will demonstrate how to do this during the first couple of days of your course.\r\n\r\nPlease do not reply to this email, instead direct any questions about your account to your instructor.\r\n\r\nBest of luck,\r\n\r\nMumstudents.org Automated Account Creator\r\n\r\nP.S. Please let Professor Michael Zijlstra mzijlstra@mum.edu know if you want to try and break the security on mumstudents.org. I'm always happy to work with students to improve security. Just be sure to let me know _before_ you start.\r\n";
 
 echo -e $message | sendmail $email 
 
