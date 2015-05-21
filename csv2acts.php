@@ -53,7 +53,7 @@ pass: $pass
 
 Please note that both the username and password are case sensitive, and that the password includes spaces and at least one punctuation mark.
 
-You can use an sftp client like FileZilla to log into your account, your course instructor will demonstrate how to do this during the first couple of days of your course.
+You can use an sftp client like FileZilla to log into your account, your course instructor will demonstrate how to do this during the first couple of days of your course. Note that you cannot store more than 50MB of data on the server.
 
 Please do not reply to this email, instead direct any questions about your account to your instructor.
 
